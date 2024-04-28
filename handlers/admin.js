@@ -1,8 +1,8 @@
-const { Admin } = require('../playstore');
+const { User } = require('../models/userModel');
 
 const adminRegistration = async (req, res) => {
     try {
-      const admin = await Admin.create(req.body);
+      const admin = await User.create(req.body);
       res.status(201).json(admin);
     } catch (err) {
       res.status(400).json({ error: err.message });
@@ -11,8 +11,14 @@ const adminRegistration = async (req, res) => {
 
   const findAdmin = async (req, res) => {
     try {
-      const admin = await Admin.findById(req.params.id);
-      res.json(admin);
+      const admin = await User.findById(req.params.id);
+      
+      if(admin.role === 'ADMIN'){
+        res.json(admin);
+      } else {
+        res.json('User Forbidden')
+      }
+
     } catch (err) {
       res.status(404).json({ error: 'Admin not found' });
     }
@@ -20,7 +26,7 @@ const adminRegistration = async (req, res) => {
 
   const updateAdmin = async (req, res) => {
     try {
-      const admin = await Admin.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const admin = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
       res.json(admin);
     } catch (err) {
       res.status(400).json({ error: err.message });
@@ -29,11 +35,11 @@ const adminRegistration = async (req, res) => {
 
   const deleteAdmin =  async (req, res) => {
     try {
-      await Admin.findByIdAndDelete(req.params.id);
+      await User.findByIdAndDelete(req.params.id);
       res.sendStatus(204);
-    } catch (err) {
+    } catch (err) {   
       res.status(400).json({ error: err.message });
     }
   }
 
-  module.exports = { adminRegistration, findAdmin, updateAdmin, deleteAdmin };
+  module.exports = { adminRegistration, findAdmin, updateAdmin, deleteAdmin }; 

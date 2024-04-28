@@ -14,25 +14,27 @@ const userSchema = new mongoose.Schema({
   email: { 
     type: String, 
     required: true, 
-    unique: true },
+    unique: true 
+  },
+  role: { 
+    type: String,
+    enum: ['USER', 'ADMIN'],
+    default: 'USER'
+  }
   
 });
 
+// ADMIN/Register -> username:
+//password :
+//email:
+//role: 'ADMIN'
 
-const adminSchema = new mongoose.Schema({
-  username: { 
-    type: String, 
-    required: true, 
-    unique: true 
-},
-  password: { 
-    type: String, 
-    required: true 
-},
 
-});
+//ADMIN/LOGIN -> ADMIN ID TEST (It should work)
+
+//USER/LOGIN -> ADMIN ID TEST (It shouldn't work) 
+
 
 const User = mongoose.model('User', userSchema);
-const Admin = mongoose.model('Admin', adminSchema);
 
-module.exports = { User, Admin };
+module.exports = { User };

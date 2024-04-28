@@ -1,4 +1,4 @@
-const { User } = require('../playstore');
+const { User } = require('../models/userModel');
 
 
 const userRegistration = async (req, res) => {
@@ -42,6 +42,4 @@ const userRegistration = async (req, res) => {
   }
 
 
-  module.exports = {userRegistration, findUser, updateUser, deleteUser };
-
-
+  module.exports = { userRegistration, findUser, updateUser, deleteUser };
