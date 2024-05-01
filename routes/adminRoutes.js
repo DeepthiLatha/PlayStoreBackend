@@ -4,10 +4,10 @@ const { adminRegistration, findAdmin, updateAdmin, deleteAdmin } = require('../h
 
 router.post('/register', adminRegistration );
 
-router.get('/login/:id', findAdmin);
+router.get('/login', findAdmin);
 
-router.put('/updateUser/:id', updateAdmin);
+router.put('/updateUser', updateAdmin);
 
-router.delete('/deleteUser/:id', deleteAdmin);
+router.delete('/deleteUser', deleteAdmin);
 
 module.exports = router;

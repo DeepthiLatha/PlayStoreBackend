@@ -4,10 +4,10 @@ const { userRegistration, findUser, updateUser, deleteUser } = require('../handl
 
 router.post('/register', userRegistration );
 
-router.get('/login/:id', findUser );
+router.get('/login', findUser );
 
-router.put('/updateUser/:id', updateUser);
+router.put('/updateUser', updateUser);
 
-router.delete('/deleteUser/:id', deleteUser);
+router.delete('/deleteUser', deleteUser);
 
 module.exports = router;

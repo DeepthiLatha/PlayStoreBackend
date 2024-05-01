@@ -12,14 +12,34 @@ const userRegistration = async (req, res) => {
   }
 
 
-  const findUser = async (req, res) => {
-    try {
-      const user = await User.findById(req.params.id);
-      res.json(user);
-    } catch (err) {
+  // const findUser = async (req, res) => {
+  //   try {
+  //     const user = await User.findById(req.params.id);
+  //     res.json(user);
+  //   } catch (err) {
+  //     res.status(404).json({ error: 'User not found' });
+  //   }
+  // }
+
+
+    
+const findUser = async (req, res) => {
+  try {
+      const { username, password, role } = req.body;
+
+      // Find the user by username and password
+      const user = await User.findOne({ username, password });
+
+      // If user is found and has the specified role, return the user details
+      if (user && user.role === role) {
+          res.json(user);
+      } else {
+          res.status(403).json({ error: 'Unauthorized' }); // Send 403 Forbidden status if user is not authorized
+      }
+  } catch (err) {
       res.status(404).json({ error: 'User not found' });
-    }
   }
+}
 
 
   const updateUser = async (req, res) => {

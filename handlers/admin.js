@@ -9,20 +9,41 @@ const adminRegistration = async (req, res) => {
     }
   }
 
-  const findAdmin = async (req, res) => {
-    try {
-      const admin = await User.findById(req.params.id);
+  // const findAdmin = async (req, res) => {
+  //   try {
+  //     const admin = await User.findById(req.params.id);
       
-      if(admin.role === 'ADMIN'){
-        res.json(admin);
-      } else {
-        res.json('User Forbidden')
-      }
+  //     if(admin.role === 'ADMIN'){
+  //       res.json(admin);
+  //     } else {
+  //       res.json('User Forbidden')
+  //     }
 
-    } catch (err) {
+  //   } catch (err) {
+  //     res.status(404).json({ error: 'Admin not found' });
+  //   }
+  // }
+
+
+  
+const findAdmin = async (req, res) => {
+  try {
+      const { username, password, role } = req.body;
+
+      // Find the user by username and password
+      const admin = await User.findOne({ username, password });
+
+      // If user is found and has the specified role, return the admin details
+      if (admin && admin.role === role) {
+          res.json(admin);
+      } else {
+          res.status(403).json({ error: 'Unauthorized' }); // Send 403 Forbidden status if user is not authorized
+      }
+  } catch (err) {
       res.status(404).json({ error: 'Admin not found' });
-    }
   }
+}
+
 
   const updateAdmin = async (req, res) => {
     try {
