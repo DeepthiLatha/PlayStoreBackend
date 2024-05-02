@@ -5,7 +5,7 @@ const { authorize } = require('../middlewares/auth');
 
 router.post('/register', adminRegistration );
 
-router.get('/login', authorize('ADMIN'), findAdmin);
+router.get('/login', findAdmin);
 
 router.put('/updateUser', authorize('ADMIN'),  updateAdmin);
 

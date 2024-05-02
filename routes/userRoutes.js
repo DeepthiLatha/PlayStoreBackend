@@ -5,7 +5,7 @@ const { authorize } = require('../middlewares/auth');
 
 router.post('/register', userRegistration );
 
-router.get('/login', authorize(), findUser );
+router.get('/login', findUser );
 
 router.put('/updateUser', authorize(), updateUser);
 
