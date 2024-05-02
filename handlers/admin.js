@@ -1,4 +1,5 @@
 const { User } = require('../models/userModel');
+const { generateToken } = require('../middlewares/auth');
 
 const adminRegistration = async (req, res) => {
     try {
@@ -9,33 +10,17 @@ const adminRegistration = async (req, res) => {
     }
   }
 
-  // const findAdmin = async (req, res) => {
-  //   try {
-  //     const admin = await User.findById(req.params.id);
-      
-  //     if(admin.role === 'ADMIN'){
-  //       res.json(admin);
-  //     } else {
-  //       res.json('User Forbidden')
-  //     }
 
-  //   } catch (err) {
-  //     res.status(404).json({ error: 'Admin not found' });
-  //   }
-  // }
-
-
-  
 const findAdmin = async (req, res) => {
   try {
       const { username, password, role } = req.body;
 
       // Find the user by username and password
       const admin = await User.findOne({ username, password });
-
       // If user is found and has the specified role, return the admin details
-      if (admin && admin.role === role) {
-          res.json(admin);
+      if (admin && admin.role === 'ADMIN') {
+        const token = generateToken({ username, role });
+        res.json({ token });
       } else {
           res.status(403).json({ error: 'Unauthorized' }); // Send 403 Forbidden status if user is not authorized
       }

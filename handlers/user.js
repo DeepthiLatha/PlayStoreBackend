@@ -1,4 +1,5 @@
 const { User } = require('../models/userModel');
+const { generateToken } = require('../middlewares/auth');
 
 
 const userRegistration = async (req, res) => {
@@ -12,16 +13,6 @@ const userRegistration = async (req, res) => {
   }
 
 
-  // const findUser = async (req, res) => {
-  //   try {
-  //     const user = await User.findById(req.params.id);
-  //     res.json(user);
-  //   } catch (err) {
-  //     res.status(404).json({ error: 'User not found' });
-  //   }
-  // }
-
-
     
 const findUser = async (req, res) => {
   try {
@@ -32,7 +23,8 @@ const findUser = async (req, res) => {
 
       // If user is found and has the specified role, return the user details
       if (user && user.role === role) {
-          res.json(user);
+        const token = generateToken({ username, role });
+        res.json({ token });
       } else {
           res.status(403).json({ error: 'Unauthorized' }); // Send 403 Forbidden status if user is not authorized
       }
