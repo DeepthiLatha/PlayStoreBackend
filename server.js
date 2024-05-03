@@ -25,7 +25,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     res.json('Deepthi');
   })
 
-  app.use('/users', userRouter);
+  app.use('/user', userRouter);
 
   app.use('/admin', adminRouter);
   
