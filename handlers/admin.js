@@ -30,22 +30,54 @@ const findAdmin = async (req, res) => {
 }
 
 
-  const updateAdmin = async (req, res) => {
-    try {
-      const admin = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      res.json(admin);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  }
+const updateAdmin = async (req, res) => {
+  try {
+    const { username } = req.body;
 
-  const deleteAdmin =  async (req, res) => {
-    try {
-      await User.findByIdAndDelete(req.params.id);
-      res.sendStatus(204);
-    } catch (err) {   
-      res.status(400).json({ error: err.message });
+    if (!username) {
+      return res.status(400).json({ error: "Username is required." });
     }
+
+    // Extract the data to update from the request body
+    const updateData = { ...req.body };
+    delete updateData.username; // To avoid changing the username itself
+
+    const updatedAdmin = await User.findOneAndUpdate(
+      { username },
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedAdmin) {
+      return res.status(404).json({ error: "Admin not found." });
+    }
+
+    res.json(updatedAdmin);
+  } catch (err) {
+    res.status(500).json({ error: "An error occurred while updating the user." });
   }
+};
+
+
+  const deleteAdmin = async (req, res) => {
+    try {
+      const { username } = req.body;
+      
+      if (!username) {
+        return res.status(400).json({ error: "Username is required." });
+      }
+  
+      const user = await User.findOneAndDelete({ username });
+  
+      if (!user) {
+        return res.status(404).json({ error: "Admin not found." });
+      }
+
+      res.sendStatus(204);
+    } catch (err) {
+      res.status(500).json({ error: "An error occurred while deleting the user." });
+    }
+  };
+  
 
   module.exports = { adminRegistration, findAdmin, updateAdmin, deleteAdmin }; 

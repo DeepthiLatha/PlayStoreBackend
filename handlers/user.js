@@ -36,7 +36,7 @@ const findUser = async (req, res) => {
 
   const updateUser = async (req, res) => {
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const user = await User.findByIdAndUpdate(req.body.id, req.body, { new: true });
       res.json(user);
     } catch (err) {
       res.status(400).json({ error: err.message });
