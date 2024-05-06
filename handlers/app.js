@@ -1,5 +1,5 @@
 const Application = require('../models/appModel');
-const User = require('../models/userModel');
+// const User = require('../models/userModel');
 const Notification = require('../models/notificationModel'); // Assuming you have a notification model
 
 const getApps = async (req, res) => {
@@ -110,7 +110,41 @@ const announceUpdates = async (req, res) => {
   }
 };
 
+const createComment = async (req, res) => {
+  const { applicationId, content, rating } = req.body;
+
+  if (!applicationId || !content || typeof rating !== 'number' || rating < 1 || rating > 5) {
+    return res.status(400).json({ message: 'Invalid request. Please ensure content and rating are provided and valid.' });
+  }
+
+  try {
+    const application = await Application.findById(applicationId);
+
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found.' });
+    }
+
+    const comment = new Comment({
+      application: applicationId,
+      user: req.user._id,
+      content,
+    });
+
+    await comment.save();
+
+    // Update application rating (simple average for demonstration)
+    const comments = await Comment.find({ application: applicationId });
+    const newRating = comments.reduce((sum, com) => sum + (com.rating || 0), 0) / comments.length;
+
+    application.ratings = newRating;
+    await application.save();
+
+    res.status(201).json({ message: 'Comment created and rating updated.', comment });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating comment.', error });
+  }
+};
 
 
-module.exports = { announceUpdates, deleteApp, updateApp, getApp, createApp, getApps };
+module.exports = { announceUpdates, deleteApp, updateApp, getApp, createApp, getApps, createComment };
 
