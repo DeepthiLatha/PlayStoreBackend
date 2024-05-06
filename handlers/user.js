@@ -1,7 +1,6 @@
 const { User } = require('../models/userModel');
 const { generateToken } = require('../middlewares/auth');
 
-
 const userRegistration = async (req, res) => {
     try {
       const user = await User.create(req.body);
@@ -12,8 +11,6 @@ const userRegistration = async (req, res) => {
     }
   }
 
-
-    
 const findUser = async (req, res) => {
   try {
       const { username, password, role } = req.body;

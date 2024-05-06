@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+
 const generateToken = (user) => {
     const token = jwt.sign(
       { username: user.username, role: user.role },
@@ -17,8 +18,8 @@ const generateToken = (user) => {
       if (!authHeader) {
         return res.status(401).send('Unauthorized');
       }
-  
       const token = authHeader.split(' ')[1];
+    
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log(process.env.JWT_SECRET, decoded);
