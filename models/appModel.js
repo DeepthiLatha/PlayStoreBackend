@@ -1,55 +1,26 @@
 const mongoose = require('mongoose');
 
-// Define the review schema
-const reviewSchema = new mongoose.Schema({
-    user: {
-        type: String,
-        required: true
-    },
-    rating: {
-        type: Number,
-        required: true
-    },
-    comment: {
-        type: String,
-        required: true
-    }
+const appSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  isVisible: { type: Boolean, default: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  downloadCount: { type: Number, default: 0 },
+  releaseDate: { type: String }, // Year or a more detailed date
+  version: { type: String },
+  genre: { type: String },
+  ratings: { type: Number, default: 0 },
+  imageUrl: { type: String }, // URL to the app's image
 });
+  
 
-// Define the application schema
-const applicationSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    releaseDate: {
-        type: Date,
-        required: true
-    },
-    version: {
-        type: String,
-        required: true
-    },
-    ratings: {
-        type: Number,
-        default: 0
-    },
-    genre: {
-        type: String,
-        required: true
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    reviews: [reviewSchema] // Embedding review schema into application schema
-});
+const commentSchema = new mongoose.Schema({
+    application: { type: mongoose.Schema.Types.ObjectId, ref: 'Application', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    content: { type: String, required: true },
+  });
 
-// Create a model based on the schema
-const Application = mongoose.model('Application', applicationSchema);
 
-module.exports = Application;
+module.exports = mongoose.model('Comment', commentSchema);
+
+module.exports = mongoose.model('Application', appSchema);
