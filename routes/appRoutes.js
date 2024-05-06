@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { authorize } = require('../middlewares/auth');
 
+const { authorize } = require('../middlewares/auth');
 const { getApps, createApp, getApp, updateApp, deleteApp, announceUpdates} = require('../handlers/app');
 
 // Get all applications for the logged-in owner and user
