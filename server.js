@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const userRouter = require('./routes/userRoutes');
 const adminRouter = require('./routes/adminRoutes');
+const appRouter = require('./routes/appRoutes')
 
 dotEnv.config();
 
@@ -28,6 +29,8 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   app.use('/user', userRouter);
 
   app.use('/admin', adminRouter);
+
+  app.use('/app', appRouter);
   
 
 const PORT = process.env.PORT || 3000;

@@ -1,5 +1,5 @@
-const Application = require('../models/Application');
-const User = require('../models/User');
+const Application = require('../models/appModel');
+const User = require('../models/userModel');
 const Notification = require('../models/notificationModel'); // Assuming you have a notification model
 
 const getApps = async (req, res) => {
