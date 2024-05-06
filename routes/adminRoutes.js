@@ -3,7 +3,7 @@ const router = express.Router();
 const { adminRegistration, findAdmin, updateAdmin, deleteAdmin } = require('../handlers/admin');
 const { authorize } = require('../middlewares/auth');
 
-router.post('/register', adminRegistration );
+router.post('/register', adminRegistration);
 
 router.post('/login', findAdmin);
 
