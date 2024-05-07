@@ -12,21 +12,31 @@ const getApps = async (req, res) => {
 };
 
 const createApp = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, releaseDate, version, genre, imageUrl } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ message: 'Name is required.' });
+  }
 
   try {
     const app = new Application({
       name,
       description,
       owner: req.user._id,
+      releaseDate,
+      version,
+      genre,
+      imageUrl,
     });
 
     await app.save();
     res.status(201).json(app);
   } catch (error) {
+    console.error(error); // Log the error for debugging
     res.status(500).json({ message: 'Error creating application' });
   }
 };
+
 
 const getApp = async (req, res) => {
   try {
